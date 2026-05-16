@@ -1,0 +1,125 @@
+@import "tailwindcss";
+@source "../components/**/*.{js,ts,jsx,tsx}";
+@source "../node_modules/some-package/dist/**/*.js";
+
+@theme inline {
+
+  /* Fonts  */
+
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-inter);
+  --font-ui: var(--font-poppins);
+
+  /* BACKGROUND COLORS */
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fb;
+  --bg-dark: #0b1220;
+  --bg-card: #ffffff;
+  --bg-navbar: #0f172a;
+  --bg-footer: #020617;
+
+  /* =========================
+     TEXT COLORS
+  ========================= */
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-white: #ffffff;
+  --text-dark: #020617;
+
+  /* =========================
+     BRAND COLORS
+  ========================= */
+  --primary-red: #dc2626;
+  --primary-red-hover: #b91c1c;
+
+  --primary-blue: #2563eb;
+  --primary-blue-hover: #1d4ed8;
+
+  --primary-black: #0f172a;
+  --primary-black-light: #1e293b;
+
+  --accent-light-blue: #dbeafe;
+  --accent-light-red: #fee2e2;
+
+  /* =========================
+     BUTTONS
+  ========================= */
+  --btn-primary: #dc2626;
+  --btn-primary-hover: #b91c1c;
+
+  --btn-secondary: #2563eb;
+  --btn-secondary-hover: #1d4ed8;
+
+  --btn-dark: #0f172a;
+  --btn-dark-hover: #1e293b;
+
+  --btn-text: #ffffff;
+
+  /* =========================
+     BORDERS
+  ========================= */
+  --border-light: #e2e8f0;
+  --border-default: #cbd5e1;
+  --border-dark: #334155;
+
+  /* =========================
+     STATUS COLORS
+  ========================= */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #0ea5e9;
+
+  /* =========================
+     PRODUCT BADGES
+  ========================= */
+  --sale-badge: #dc2626;
+  --new-badge: #2563eb;
+  --hot-badge: #ea580c;
+
+  /* =========================
+     SHADOWS
+  ========================= */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  --shadow-md: 0 6px 15px rgba(0, 0, 0, 0.12);
+
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.16);
+
+  /* =========================
+     GRADIENTS
+  ========================= */
+  --gradient-primary: linear-gradient(135deg,
+      #dc2626,
+      #2563eb);
+
+  --gradient-dark: linear-gradient(135deg,
+      #0f172a,
+      #1e293b);
+
+  --gradient-sale: linear-gradient(135deg,
+      #dc2626,
+      #ef4444);
+}
+
+/* Global resets and base styles */
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+button,
+nav {
+  font-family: var(--font-ui);
+}
