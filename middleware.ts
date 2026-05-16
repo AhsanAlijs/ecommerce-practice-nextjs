@@ -1,69 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
-
-/* ======================================================
-   PUBLIC ROUTES
-====================================================== */
-
-const publicRoutes = ["/signin", "/signup", "/", "/forgot-password"];
-
-/* ======================================================
-   MIDDLEWARE
-====================================================== */
+const publicRoutes = ["/signin", "/signup", "/forgot-password", "/"];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("accessToken")?.value;
-
   const { pathname } = request.nextUrl;
-
-  /* ======================================================
-     CHECK PUBLIC ROUTES
-  ====================================================== */
 
   const isPublicRoute = publicRoutes.includes(pathname);
 
-  /* ======================================================
-     USER NOT LOGGED IN
-  ====================================================== */
-
+  // ======================================
+  // ❌ NO TOKEN
+  // ======================================
   if (!token) {
     if (!isPublicRoute) {
       return NextResponse.redirect(new URL("/signin", request.url));
     }
-
     return NextResponse.next();
   }
 
-  /* ======================================================
-     VERIFY TOKEN
-  ====================================================== */
+  // ======================================
+  // 🔥 LOGGED IN USER LOGIC
+  // ======================================
 
-  try {
-    jwt.verify(token, JWT_SECRET);
-
-    /* ======================================================
-       IF LOGGED IN & TRYING TO ACCESS LOGIN
-    ====================================================== */
-
-    if (isPublicRoute) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    return NextResponse.next();
-  } catch {
-    /* ======================================================
-       INVALID TOKEN
-    ====================================================== */
-
-    const response = NextResponse.redirect(new URL("/signin", request.url));
-
-    response.cookies.delete("accessToken");
-
-    return response;
+  // If logged in user tries auth pages
+  if (pathname === "/signin" || pathname === "/signup") {
+    return NextResponse.redirect(new URL("/", request.url));
   }
+
+  return NextResponse.next();
 }
 
 /* ======================================================
@@ -72,14 +36,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-      Protect all routes except:
-      - api
-      - next static files
-      - images
-      - favicon
-    */
-
     "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

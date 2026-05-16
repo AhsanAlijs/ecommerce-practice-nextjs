@@ -10,8 +10,12 @@ import { signInFieldsConfig } from "@/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignInValidationSchema } from "@/validations/signinformSchema";
 import LoginPageCard from "./LoginPageCard";
+import { useLogin } from "@/hooks/auth/useAuth";
+import { ShowToast } from "../ui/Alerts/ShowToast";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -22,9 +26,28 @@ export default function SignInForm() {
     resolver: yupResolver(SignInValidationSchema),
   });
 
+  const { mutate, isPending } = useLogin();
+
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
-    reset();
+    mutate({
+      email: data.email,
+      password: data.password,
+    },
+      {
+        onSuccess: (res) => {
+          console.log("Response ON Success:", res);
+          if (res.success) {
+            ShowToast({ type: "success", message: res.message });
+            reset();
+            router.push("/");
+          }
+        }, onError: (err: any) => {
+          console.log("Error:", err.response?.data);
+          ShowToast({ type: "error", message: err.response?.data?.message });
+        },
+      }
+    )
+    // console.log(data, "Signup Response Data In Function")
   };
 
   return (
@@ -122,9 +145,10 @@ export default function SignInForm() {
             {/* SUBMIT BUTTON */}
             <button
               type="submit"
-              disabled={!isValid || isSubmitting}
+              disabled={!isValid || isSubmitting || isPending}
               className="
                 group w-full rounded-xl
+                cursor-pointer
                 py-3.5 px-6
                 text-white font-semibold
                 flex items-center justify-center gap-2
@@ -137,7 +161,7 @@ export default function SignInForm() {
               "
               style={{ background: "var(--gradient-primary)" }}
             >
-              {isSubmitting ? "Signing in..." : "Sign In"}
+              {isSubmitting || isPending ? "Signing in..." : "Sign In"}
               <LuArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 

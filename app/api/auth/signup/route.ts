@@ -51,6 +51,23 @@ export async function POST(req: Request) {
       );
     }
 
+    const existingUserPhoneNumber = await sql`
+      SELECT id, email
+      FROM users
+      WHERE phone = ${phone}
+      LIMIT 1
+    `;
+
+    if (existingUserPhoneNumber.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "User already exists with this phone number",
+        },
+        { status: 409 },
+      );
+    }
+
     //    HASH PASSWORD
 
     const hashedPassword = await hashPassword(password);

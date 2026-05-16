@@ -11,6 +11,7 @@ import RegisterPageCard from "./RegisterPageCard";
 import PasswordInput from "../ui/fields/PasswordInput";
 import { useSignup } from "@/hooks/auth/useAuth";
 import { useRouter } from "next/navigation";
+import { ShowToast } from "../ui/Alerts/ShowToast";
 export default function SignupForm() {
 
   const router = useRouter();
@@ -25,10 +26,9 @@ export default function SignupForm() {
     resolver: yupResolver(AuthValidationSchema),
   });
 
-  const { mutate, isPending, isSuccess, data } = useSignup();
+  const { mutate, isPending } = useSignup();
 
   const onSubmit = (data: SignInFormValues) => {
-    console.log(data, "Register Form Data")
     mutate({
       fullName: data.fullName,
       email: data.email,
@@ -39,16 +39,19 @@ export default function SignupForm() {
         onSuccess: (res) => {
           console.log("Response ON Success:", res);
           if (res.success) {
+            ShowToast({ type: "success", message: res.message });
+            reset();
             router.push("/signin");
           }
         }, onError: (err: any) => {
           console.log("Error:", err.response?.data);
-          alert(err.response?.data?.message);
+          ShowToast({ type: "error", message: err.response?.data?.message });
         },
       }
     )
     // console.log(data, "Signup Response Data In Function")
   };
+  
   return (
     <section className="min-h-screen bg-[var(--bg-secondary)] flex items-center justify-center px-4 py-10 font-[family-name:var(--font-body)]">
       <div className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[var(--bg-card)] shadow-[var(--shadow-lg)] grid grid-cols-1 lg:grid-cols-2 border border-[var(--border-light)]">

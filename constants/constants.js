@@ -70,29 +70,32 @@ export const features = [
   },
 ];
 
-export const alertStyles = {
+export const toastStyles = {
   success: {
-    bg: "#eafaf1",
+    icon: <FaCheckCircle color="#16a34a" />,
     border: "#16a34a",
-    text: "#16a34a",
-    icon: <FaCheckCircle />,
+    background: "#eafaf1",
+    color: "#16a34a",
   },
+
   error: {
-    bg: "#fee2e2",
+    icon: <FaTimesCircle color="#ef4444" />,
     border: "#ef4444",
-    text: "#ef4444",
-    icon: <FaTimesCircle />,
+    background: "#fee2e2",
+    color: "#ef4444",
   },
+
   warning: {
-    bg: "#fef3c7",
+    icon: <FaExclamationTriangle color="#f59e0b" />,
     border: "#f59e0b",
-    text: "#f59e0b",
-    icon: <FaExclamationTriangle />,
+    background: "#fef3c7",
+    color: "#f59e0b",
   },
+
   info: {
-    bg: "#dbeafe",
+    icon: <FaInfoCircle color="#0ea5e9" />,
     border: "#0ea5e9",
-    text: "#0ea5e9",
-    icon: <FaInfoCircle />,
+    background: "#dbeafe",
+    color: "#0ea5e9",
   },
 };

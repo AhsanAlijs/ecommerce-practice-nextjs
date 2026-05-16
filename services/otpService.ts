@@ -2,7 +2,7 @@ import { api } from "@/lib/axios";
 
 // Send OTP
 export const sendOtp = async (email: string) => {
-    const res = await api.post("/auth/send-otp", { email });
+    const res = await api.post("/auth/forgot-password", { email });
     return res.data;
 };
 

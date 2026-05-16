@@ -58,3 +58,8 @@ export type SignupPayload = {
   password: string;
 };
 
+type ToastType = "success" | "error";
+export interface ShowToastProps {
+  type?: ToastType;
+  message: string;
+}
