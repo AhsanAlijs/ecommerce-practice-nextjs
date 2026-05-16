@@ -1,3 +1,4 @@
+import { FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaTimesCircle } from "react-icons/fa";
 import { LuShieldCheck, LuSparkles, LuTruck } from "react-icons/lu";
 
 export const signUpFieldsConfig = [
@@ -68,3 +69,30 @@ export const features = [
     desc: "Your data is encrypted and protected end-to-end.",
   },
 ];
+
+export const alertStyles = {
+  success: {
+    bg: "#eafaf1",
+    border: "#16a34a",
+    text: "#16a34a",
+    icon: <FaCheckCircle />,
+  },
+  error: {
+    bg: "#fee2e2",
+    border: "#ef4444",
+    text: "#ef4444",
+    icon: <FaTimesCircle />,
+  },
+  warning: {
+    bg: "#fef3c7",
+    border: "#f59e0b",
+    text: "#f59e0b",
+    icon: <FaExclamationTriangle />,
+  },
+  info: {
+    bg: "#dbeafe",
+    border: "#0ea5e9",
+    text: "#0ea5e9",
+    icon: <FaInfoCircle />,
+  },
+};

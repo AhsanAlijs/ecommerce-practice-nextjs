@@ -52,8 +52,9 @@ export type ResetPasswordValues = {
 };
 
 export type SignupPayload = {
-    fullName: string;
-    email: string;
-    phone?: string;
-    password: string;
+  fullName: string;
+  email: string;
+  phone?: string;
+  password: string;
 };
+

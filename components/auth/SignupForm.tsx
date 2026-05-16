@@ -1,15 +1,20 @@
 "use client";
-import { FeatureCardType, SignInFormValues } from "@/types";
+import { SignInFormValues } from "@/types";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { LuArrowRight } from "react-icons/lu";
 import TextInput from "../ui/fields/TextInput";
-import { features, signUpFieldsConfig } from "@/constants/constants";
+import { signUpFieldsConfig } from "@/constants/constants";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthValidationSchema } from "../../validations/signupformSchema";
 import RegisterPageCard from "./RegisterPageCard";
 import PasswordInput from "../ui/fields/PasswordInput";
+import { useSignup } from "@/hooks/auth/useAuth";
+import { useRouter } from "next/navigation";
 export default function SignupForm() {
+
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -20,11 +25,30 @@ export default function SignupForm() {
     resolver: yupResolver(AuthValidationSchema),
   });
 
-  const onSubmit = (data: SignInFormValues) => {
-    console.log(data);
-    reset();
-  };
+  const { mutate, isPending, isSuccess, data } = useSignup();
 
+  const onSubmit = (data: SignInFormValues) => {
+    console.log(data, "Register Form Data")
+    mutate({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+    },
+      {
+        onSuccess: (res) => {
+          console.log("Response ON Success:", res);
+          if (res.success) {
+            router.push("/signin");
+          }
+        }, onError: (err: any) => {
+          console.log("Error:", err.response?.data);
+          alert(err.response?.data?.message);
+        },
+      }
+    )
+    // console.log(data, "Signup Response Data In Function")
+  };
   return (
     <section className="min-h-screen bg-[var(--bg-secondary)] flex items-center justify-center px-4 py-10 font-[family-name:var(--font-body)]">
       <div className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[var(--bg-card)] shadow-[var(--shadow-lg)] grid grid-cols-1 lg:grid-cols-2 border border-[var(--border-light)]">
@@ -111,9 +135,10 @@ export default function SignupForm() {
             {/* SUBMIT BUTTON */}
             <button
               type="submit"
-              disabled={!isValid || isSubmitting}
+              disabled={!isValid || isSubmitting || isPending}
               className="
                 group w-full rounded-xl
+                cursor-pointer 
                 py-3.5 px-6
                 text-white font-semibold
                 flex items-center justify-center gap-2
@@ -126,7 +151,7 @@ export default function SignupForm() {
               "
               style={{ background: "var(--gradient-primary)" }}
             >
-              {isSubmitting ? "Creating account..." : "Create Account"}
+              {isPending ? "Creating account..." : "Create Account"}
               <LuArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 
