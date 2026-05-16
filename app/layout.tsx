@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, Poppins } from "next/font/google";
 import "./globals.css";
+import ClientProviders from "@/components/ClientProvides";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -34,9 +35,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${poppins.variable} ${inter.variable} ${playfair.variable} h-full antialiased`}
-      cz-shortcut-listen="true"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body
+        className="min-h-full flex flex-col"
+        cz-shortcut-listen="true"
+      >
+        <ClientProviders>
+          {children}
+        </ClientProviders>
+      </body>
     </html>
   );
 }

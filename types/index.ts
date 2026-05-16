@@ -50,3 +50,10 @@ export type ResetPasswordValues = {
   password: string;
   confirmPassword: string;
 };
+
+export type SignupPayload = {
+    fullName: string;
+    email: string;
+    phone?: string;
+    password: string;
+};

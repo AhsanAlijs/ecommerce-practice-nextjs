@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
     const otp = generateOTP();
 
-    const otpExpiry = new Date(Date.now() + 1000 * 60 * 10);
+    const otpExpiry = new Date(Date.now() + 1000 * 60 * 1);
 
     /* =========================================
        SAVE OTP
@@ -64,9 +64,6 @@ export async function POST(req: Request) {
        SEND EMAIL HERE
     ========================================= */
     // Node Mialer
-    // await sendOTPEmail(email, otp);
-
-    // Resend
     await sendOTPEmail(email, otp);
 
     return NextResponse.json(

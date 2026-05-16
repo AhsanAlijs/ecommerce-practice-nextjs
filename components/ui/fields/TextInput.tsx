@@ -1,4 +1,5 @@
-import { TextInputProps } from "@/app/types";
+import { TextInputProps } from "@/types";
+
 
 export default function TextInput({
   label,
@@ -36,15 +37,14 @@ export default function TextInput({
           transition-all duration-200
           outline-none
 
-          ${
-            error
-              ? `
+          ${error
+            ? `
                 border-[var(--error)]
                 focus:border-[var(--error)]
                 focus:ring-2
                 focus:ring-red-200
               `
-              : `
+            : `
                 border-[var(--border-light)]
                 focus:border-[var(--primary-blue)]
                 focus:ring-2
