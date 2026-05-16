@@ -99,3 +99,80 @@ export const toastStyles = {
     color: "#0ea5e9",
   },
 };
+
+export const products = [
+  {
+    id: 1,
+    title: "Premium Headphones",
+    category: "Audio",
+    price: "$129",
+    oldPrice: "$179",
+    rating: 4.9,
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
+    badge: "Hot",
+  },
+  {
+    id: 2,
+    title: "Smart Watch",
+    category: "Wearables",
+    price: "$249",
+    oldPrice: "$299",
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop",
+    badge: "New",
+  },
+  {
+    id: 3,
+    title: "Gaming Keyboard",
+    category: "Gaming",
+    price: "$99",
+    oldPrice: "$139",
+    rating: 4.7,
+    image:
+      "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?q=80&w=1200&auto=format&fit=crop",
+    badge: "Sale",
+  },
+  {
+    id: 4,
+    title: "Modern Sneakers",
+    category: "Fashion",
+    price: "$159",
+    oldPrice: "$199",
+    rating: 5.0,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    badge: "Trending",
+  },
+  {
+    id: 5,
+    title: "Modern Sneakers",
+    category: "Fashion",
+    price: "$159",
+    oldPrice: "$199",
+    rating: 5.0,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    badge: "Trending",
+  },
+  {
+    id: 6,
+    title: "Modern Sneakers",
+    category: "Fashion",
+    price: "$159",
+    oldPrice: "$199",
+    rating: 5.0,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    badge: "Trending",
+  },
+];
+
+export const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/shop" },
+  { name: "Categories", href: "/categories" },
+  { name: "Deals", href: "/deals" },
+  { name: "Contact", href: "/contact" },
+];

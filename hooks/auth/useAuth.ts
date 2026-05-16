@@ -1,6 +1,7 @@
+import { api } from "@/lib/axios";
 import { login, signup } from "@/services/authService";
 import { resetPassword, sendOtp, verifyOtp } from "@/services/otpService";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // SIGNUP
 export const useSignup = () => {
@@ -35,4 +36,27 @@ export const useResetPassword = () => {
     return useMutation({
         mutationFn: resetPassword,
     });
+};
+
+// Auth Me
+export const useAuth = () => {
+    return useQuery({
+        queryKey: ["auth-user"],
+        queryFn: async () => {
+            const res = await api.get("/auth/me");
+            return res.data;
+        },
+        retry: false,
+        staleTime: 1000 * 60 * 5,
+    });
+};
+
+export const useLogout = () => {
+    const queryClient = useQueryClient();
+
+    return async () => {
+        await api.post("/auth/logout");
+        queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+        window.location.href = "/signin";
+    };
 };

@@ -63,3 +63,14 @@ export interface ShowToastProps {
   type?: ToastType;
   message: string;
 }
+
+export type ProductType = {
+  id: number;
+  title: string;
+  category: string;
+  price: string;
+  oldPrice: string;
+  rating: number;
+  image: string;
+  badge: string;
+}

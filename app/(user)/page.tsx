@@ -1,7 +1,21 @@
-export default function Home() {
+import CTASection from "@/components/Home/CTASection";
+import FeaturesSection from "@/components/Home/FeaturesSection";
+import HeroSection from "@/components/Home/HeroSection";
+import ProductsSection from "@/components/Home/ProductsSection";
+
+
+export default function HomePage() {
   return (
-    <div className="">
-    User Route
-    </div>
+    <main className="bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-hidden">
+
+      <HeroSection />
+
+      <FeaturesSection />
+
+      <ProductsSection />
+
+      <CTASection />
+
+    </main>
   );
 }
