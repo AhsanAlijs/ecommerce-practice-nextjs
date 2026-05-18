@@ -1,5 +1,7 @@
 "use client";
 
+import { ShowToast } from "@/components/ui/Alerts/ShowToast";
+import { useSendOtp, useVerifyOtp } from "@/hooks/auth/useAuth";
 import {
   useState,
   useRef,
@@ -61,6 +63,8 @@ export default function OtpStep({ email, onSuccess, onBack }: Props) {
     inputsRef.current[Math.min(pasted.length, 5)]?.focus();
   };
 
+  const { mutate, isPending } = useVerifyOtp();
+
   const handleSubmit = async () => {
     const code = otp.join("");
     if (code.length !== 6) {
@@ -68,18 +72,62 @@ export default function OtpStep({ email, onSuccess, onBack }: Props) {
       return;
     }
     setIsSubmitting(true);
-    // TODO: call your API → verify OTP
-    await new Promise((r) => setTimeout(r, 800));
-    setIsSubmitting(false);
-    onSuccess();
+    mutate(
+      { email, otp: code },
+      {
+        onSuccess: (res) => {
+          if (!res.success) {
+            setError(res.message || "Invalid OTP. Please try again.");
+            setIsSubmitting(false);
+            return;
+          }
+          setIsSubmitting(false);
+          onSuccess();
+        },
+        onError: (err: any) => {
+          setIsSubmitting(false);
+          console.log("Error:", err.response?.data);
+          ShowToast({ type: "error", message: err.response?.data?.message });
+        },
+      },
+    );
   };
 
+  const { mutate: resendOtp, isPending: isResending } = useSendOtp();
+
   const handleResend = () => {
-    if (timer > 0) return;
-    setTimer(60);
-    setOtp(Array(6).fill(""));
-    inputsRef.current[0]?.focus();
-    // TODO: call resend API
+    if (timer > 0 || isResending) return;
+
+    resendOtp(email, {
+      onSuccess: (res) => {
+        if (!res.success) {
+          ShowToast({
+            type: "error",
+            message: res.message || "Failed to resend OTP.",
+          });
+          return;
+        }
+
+        // ✅ reset ONLY after success
+        setTimer(60);
+        setOtp(Array(6).fill(""));
+        inputsRef.current[0]?.focus();
+
+        ShowToast({
+          type: "success",
+          message: "OTP resent successfully",
+        });
+      },
+
+      onError: (err: any) => {
+        console.log("Error:", err.response?.data);
+
+        ShowToast({
+          type: "error",
+          message: err.response?.data?.message || "Something went wrong",
+        });
+      },
+    });
   };
 
   const isComplete = otp.every((d) => d !== "");
@@ -157,7 +205,7 @@ export default function OtpStep({ email, onSuccess, onBack }: Props) {
             <button
               type="button"
               onClick={handleResend}
-              className="font-semibold text-[var(--primary-blue)] hover:text-[var(--primary-blue-hover)] hover:underline"
+              className="font-semibold cursor-pointer text-[var(--primary-blue)] hover:text-[var(--primary-blue-hover)] hover:underline"
             >
               Resend code
             </button>
@@ -170,10 +218,11 @@ export default function OtpStep({ email, onSuccess, onBack }: Props) {
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!isComplete || isSubmitting}
+          disabled={!isComplete || isSubmitting || isPending}
           className="
             group w-full rounded-xl py-3.5 px-6
             text-white font-semibold
+            cursor-pointer  
             flex items-center justify-center gap-2
             transition-all duration-300
             hover:scale-[1.01] active:scale-[0.98]
@@ -182,7 +231,7 @@ export default function OtpStep({ email, onSuccess, onBack }: Props) {
           "
           style={{ background: "var(--gradient-primary)" }}
         >
-          {isSubmitting ? "Verifying..." : "Verify code"}
+          {isSubmitting || isPending ? "Verifying..." : "Verify code"}
           <LuArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </button>
 

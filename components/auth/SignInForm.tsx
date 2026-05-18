@@ -29,10 +29,11 @@ export default function SignInForm() {
   const { mutate, isPending } = useLogin();
 
   const onSubmit = (data: LoginFormValues) => {
-    mutate({
-      email: data.email,
-      password: data.password,
-    },
+    mutate(
+      {
+        email: data.email,
+        password: data.password,
+      },
       {
         onSuccess: (res) => {
           console.log("Response ON Success:", res);
@@ -41,12 +42,13 @@ export default function SignInForm() {
             reset();
             router.push("/");
           }
-        }, onError: (err: any) => {
+        },
+        onError: (err: any) => {
           console.log("Error:", err.response?.data);
           ShowToast({ type: "error", message: err.response?.data?.message });
         },
-      }
-    )
+      },
+    );
     // console.log(data, "Signup Response Data In Function")
   };
 
@@ -117,23 +119,7 @@ export default function SignInForm() {
             )}
 
             {/* REMEMBER ME + FORGOT PASSWORD */}
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  className="
-                    w-4 h-4 rounded
-                    border-[var(--border-default)]
-                    text-[var(--primary-blue)]
-                    focus:ring-2 focus:ring-[var(--primary-blue)]
-                    cursor-pointer
-                  "
-                />
-                <span className="text-[var(--text-secondary)] font-medium">
-                  Remember me
-                </span>
-              </label>
-
+            <div className="flex items-center justify-end text-sm">
               <Link
                 href="/forgot-password"
                 className="font-semibold text-[var(--primary-blue)] hover:text-[var(--primary-blue-hover)] hover:underline transition-colors"

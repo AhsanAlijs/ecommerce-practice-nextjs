@@ -6,6 +6,8 @@ import { LuArrowRight, LuMail } from "react-icons/lu";
 import TextInput from "@/components/ui/fields/TextInput";
 import { ForgotPasswordSchema } from "@/validations/forgotPasswordSchema";
 import { ForgotPasswordValues } from "@/types";
+import { useSendOtp } from "@/hooks/auth/useAuth";
+import { ShowToast } from "@/components/ui/Alerts/ShowToast";
 
 type Props = {
   onSuccess: (email: string) => void;
@@ -21,11 +23,23 @@ export default function EmailStep({ onSuccess }: Props) {
     resolver: yupResolver(ForgotPasswordSchema),
   });
 
-  const onSubmit = async (data: ForgotPasswordValues) => {
-    // TODO: call your API → send OTP to email
-    console.log("Sending OTP to:", data.email);
-    await new Promise((r) => setTimeout(r, 800)); // simulate
-    onSuccess(data.email);
+  const { mutate, isPending } = useSendOtp();
+
+  const onSubmit = (data: ForgotPasswordValues) => {
+    mutate(data.email, {
+      onSuccess: (res) => {
+        console.log("Response ON Success:", res);
+        if (res.success) {
+          ShowToast({ type: "success", message: res.message });
+          onSuccess(data.email);
+        }
+      },
+      onError: (err: any) => {
+        console.log("Error:", err.response?.data);
+        ShowToast({ type: "error", message: err.response?.data?.message });
+      },
+    });
+    // console.log(data, "Signup Response Data In Function")
   };
 
   return (
@@ -61,9 +75,10 @@ export default function EmailStep({ onSuccess }: Props) {
 
         <button
           type="submit"
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || isPending}
           className="
             group w-full rounded-xl py-3.5 px-6
+            cursor-pointer
             text-white font-semibold
             flex items-center justify-center gap-2
             transition-all duration-300
@@ -73,7 +88,7 @@ export default function EmailStep({ onSuccess }: Props) {
           "
           style={{ background: "var(--gradient-primary)" }}
         >
-          {isSubmitting ? "Sending code..." : "Send reset code"}
+          {isSubmitting || isPending ? "Sending code..." : "Send reset code"}
           <LuArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </button>
       </form>

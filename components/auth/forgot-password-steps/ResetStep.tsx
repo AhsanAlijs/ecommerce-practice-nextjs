@@ -6,12 +6,15 @@ import { LuArrowRight, LuKey } from "react-icons/lu";
 import PasswordInput from "@/components/ui/fields/PasswordInput";
 import { ResetPasswordSchema } from "@/validations/forgotPasswordSchema";
 import { ResetPasswordValues } from "@/types";
+import { useResetPassword } from "@/hooks/auth/useAuth";
+import { ShowToast } from "@/components/ui/Alerts/ShowToast";
 
 type Props = {
+  email: string;
   onSuccess: () => void;
 };
 
-export default function ResetStep({ onSuccess }: Props) {
+export default function ResetStep({ email, onSuccess }: Props) {
   const {
     register,
     handleSubmit,
@@ -44,10 +47,29 @@ export default function ResetStep({ onSuccess }: Props) {
     "var(--success)",
   ];
 
-  const onSubmit = async (data: ResetPasswordValues) => {
-    console.log("Resetting password:", data);
-    await new Promise((r) => setTimeout(r, 800));
-    onSuccess();
+  const { mutate, isPending } = useResetPassword();
+
+  const onSubmit = (data: ResetPasswordValues) => {
+    mutate(
+      {
+        email: email,
+        newPassword: data.password,
+      },
+      {
+        onSuccess: (res) => {
+          console.log("Response ON Success:", res);
+          if (res.success) {
+            ShowToast({ type: "success", message: res.message });
+            onSuccess();
+          }
+        },
+        onError: (err: any) => {
+          console.log("Error:", err.response?.data);
+          ShowToast({ type: "error", message: err.response?.data?.message });
+        },
+      },
+    );
+    // console.log(data, "Signup Response Data In Function")
   };
 
   return (
@@ -147,9 +169,10 @@ export default function ResetStep({ onSuccess }: Props) {
 
         <button
           type="submit"
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || isPending}
           className="
             group w-full rounded-xl py-3.5 px-6
+            cursor-pointer  
             text-white font-semibold
             flex items-center justify-center gap-2
             transition-all duration-300
@@ -159,7 +182,7 @@ export default function ResetStep({ onSuccess }: Props) {
           "
           style={{ background: "var(--gradient-primary)" }}
         >
-          {isSubmitting ? "Resetting..." : "Reset password"}
+          {isSubmitting || isPending ? "Resetting..." : "Reset password"}
           <LuArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </button>
       </form>

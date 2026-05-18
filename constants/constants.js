@@ -1,4 +1,9 @@
-import { FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaTimesCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaInfoCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 import { LuShieldCheck, LuSparkles, LuTruck } from "react-icons/lu";
 
 export const signUpFieldsConfig = [
@@ -175,4 +180,56 @@ export const navItems = [
   { name: "Categories", href: "/categories" },
   { name: "Deals", href: "/deals" },
   { name: "Contact", href: "/contact" },
+];
+
+export const productsList = [
+  {
+    id: 1,
+    name: "Premium Leather Jacket",
+    category: "Fashion",
+    price: 120,
+    oldPrice: 180,
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=1200&auto=format&fit=crop",
+    badge: "Sale",
+  },
+  {
+    id: 2,
+    name: "Minimal Smart Watch",
+    category: "Electronics",
+    price: 90,
+    rating: 4.5,
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop",
+    badge: "New",
+  },
+  {
+    id: 3,
+    name: "Modern Sneakers",
+    category: "Shoes",
+    price: 70,
+    oldPrice: 100,
+    rating: 4.7,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    badge: "Hot",
+  },
+  {
+    id: 4,
+    name: "Wireless Headphones",
+    category: "Audio",
+    price: 150,
+    rating: 4.9,
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
+  },
+];
+
+export const categories = [
+  "Fashion",
+  "Electronics",
+  "Gaming",
+  "Shoes",
+  "Accessories",
 ];

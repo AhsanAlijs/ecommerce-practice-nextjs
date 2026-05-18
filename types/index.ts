@@ -73,4 +73,16 @@ export type ProductType = {
   rating: number;
   image: string;
   badge: string;
-}
+};
+
+export type ProductBadge = "Sale" | "New" | "Hot";
+export type Product = {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  oldPrice?: number;
+  rating: number;
+  image: string;
+  badge?: ProductBadge;
+};

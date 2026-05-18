@@ -127,7 +127,7 @@ export default function ForgotPasswordForm() {
               />
             )}
 
-            {step === 3 && <ResetStep onSuccess={() => setStep(4)} />}
+            {step === 3 && <ResetStep email={email} onSuccess={() => setStep(4)} />}
 
             {step === 4 && <SuccessStep />}
           </div>
